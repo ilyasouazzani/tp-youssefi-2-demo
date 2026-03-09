@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:replace="template :: layout(~{::section})">
+<section>
+    <h1 class="mb-4">Produits</h1>
+
+    <form class="row g-2 mb-3" th:action="@{/index}" method="get">
+        <div class="col-sm-6 col-md-4">
+            <input type="text" class="form-control" name="keyword" placeholder="Rechercher" th:value="${keyword}" />
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-primary" type="submit">Chercher</button>
+            <a class="btn btn-primary ms-1" th:href="@{/formProduct}">Nouveau Produit</a>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.price}"></td>
+            <td th:text="${p.quantity}"></td>
+            <td>
+                <a class="btn btn-warning btn-sm me-1" th:href="@{/editProduct(id=${p.id})}" sec:authorize="hasRole('ADMIN')">Éditer</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/delete(id=${p.id})}" sec:authorize="hasRole('ADMIN')">Supprimer</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav th:if="${pages != null}">
+        <ul class="pagination">
+            <li class="page-item" th:each="page, status : ${pages}">
+                <a class="page-link"
+                   th:classappend="${status.index} == ${currentPage} ? 'active'"
+                   th:href="@{/index(page=${status.index}, keyword=${keyword})}"
+                   th:text="${status.index + 1}"></a>
+            </li>
+        </ul>
+    </nav>
+</section>
+</html>

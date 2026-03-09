@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:replace="template :: layout(~{::section})">
+<section>
+    <h2 class="mb-4">Liste des Patients</h2>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Date de naissance</th>
+            <th>Malade</th>
+            <th>Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${patients}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.nom}"></td>
+            <td th:text="${#dates.format(p.dateNaissance, 'dd/MM/yyyy')}"></td>
+            <td>
+                <span class="badge bg-danger" th:if="${p.malade}">Oui</span>
+                <span class="badge bg-success" th:if="${!p.malade}">Non</span>
+            </td>
+            <td th:text="${p.score}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</html>
